@@ -142,10 +142,6 @@ class MinimaxPlayer(IsolationPlayer):
         return best_move
 
     def minimax(self, game, depth):
-
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
-
         if depth == 0:
             return self.score(game, self), (-1, -1)
         else:
@@ -155,33 +151,46 @@ class MinimaxPlayer(IsolationPlayer):
 
 
     def min(self, game, depth):
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+
         if depth == 0:
             return self.score(game, self), (-1, -1)
         else:
             best_score = float("inf")
             best_move = (-1, -1)
-            for move in game.get_legal_moves():
-                next_game = game.forecast_move(move)
-                next_score, _ = self.max(next_game, depth-1)
-                if next_score < best_score:
-                    best_score, best_move = next_score, move
+            try:
+                for move in game.get_legal_moves():
+                    next_game = game.forecast_move(move)
+                    next_score, _ = self.max(next_game, depth-1)
+                    if next_score < best_score:
+                        best_score, best_move = next_score, move
+            except SearchTimeout:
+                return best_score, best_move
 
         return best_score, best_move
 
 
     def max(self, game, depth):
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+
         if depth == 0:
             return self.score(game, self), (-1, -1)
         else:
             best_score = float("-inf")
             best_move = (-1, -1)
-            for move in game.get_legal_moves():
-                next_game = game.forecast_move(move)
-                next_score, _ = self.min(next_game, depth-1)
-                if next_score > best_score:
-                    best_score, best_move = next_score, move
+            try:
+                for move in game.get_legal_moves():
+                    next_game = game.forecast_move(move)
+                    next_score, _ = self.min(next_game, depth-1)
+                    if next_score > best_score:
+                        best_score, best_move = next_score, move
+            except SearchTimeout:
+                return best_score, best_move
 
         return best_score, best_move
+
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
