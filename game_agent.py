@@ -154,7 +154,7 @@ class MinimaxPlayer(IsolationPlayer):
         return best_score, best_move
 
 
-    def min(self, game, depth)
+    def min(self, game, depth):
         if depth == 0:
             return self.score(game, self), (-1, -1)
         else:
@@ -163,13 +163,13 @@ class MinimaxPlayer(IsolationPlayer):
             for move in game.get_legal_moves():
                 next_game = game.forecast_move(move)
                 next_score, _ = self.max(next_game, depth-1)
-                if next_score < best_score
-                best_score, best_move = next_score, move
+                if next_score < best_score:
+                    best_score, best_move = next_score, move
 
         return best_score, best_move
 
 
-    def max(self, game, depth)
+    def max(self, game, depth):
         if depth == 0:
             return self.score(game, self), (-1, -1)
         else:
