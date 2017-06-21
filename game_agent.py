@@ -143,11 +143,10 @@ class MinimaxPlayer(IsolationPlayer):
 
     def minimax(self, game, depth):
         if depth == 0:
-            return self.score(game, self), (-1, -1)
+            return (-1, -1)
         else:
-            best_score, best_move = self.max(game, depth)
-
-        return best_score, best_move
+            _, best_move = self.max(game, depth)
+            return best_move
 
 
     def min(self, game, depth):
